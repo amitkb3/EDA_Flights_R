@@ -6,6 +6,7 @@ getwd()
 #load Data
 flight_2013 <- readRDS("data/produced_data/flight_2013.Rds")
 
+
 #General diagnosis of all variables
 diagnose(flight_2013)
 
@@ -40,4 +41,12 @@ flight_2013 %>%
 
 flight_2013 %>%
   transformation_report(target=arr_delay,output_format="html", output_file="transformation.html")
+
+# Experimental calculate skewness
+numeric_summary <- flight_2013 %>%
+  select_if(is.numeric) %>%
+  summarize_all(funs(mean(.,na.rm=TRUE),
+                     skew1 =(sum(((!is.na(.))-mean(.,na.rm=TRUE))^3)/length(.))/(sum(((!is.na(.))-mean(.,na.rm=TRUE))^2)/length(.))^(3/2)     
+                     
+  ))
 
